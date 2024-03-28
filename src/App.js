@@ -16,10 +16,19 @@ function MainMenu() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    // If the changed field is either amount or tax, recalculate totalAmount
+      let newTotalAmount = newExpense.totalAmount;
+      if (name === 'amount' || name === 'tax') {
+        newTotalAmount = (
+          parseFloat(name === 'amount' ? value : newExpense.amount || 0) + 
+          parseFloat(name === 'tax' ? value : newExpense.tax || 0)
+        ).toFixed(2);
+      }
     setNewExpense({
-      ...newExpense,
-      [name]: value,
-      totalAmount: name === 'amount' ? (parseFloat(value) + parseFloat(newExpense.tax || 0)).toFixed(2) : (parseFloat(value) + parseFloat(newExpense.amount || 0)).toFixed(2),
+        ...newExpense,
+        [name]: value,
+        totalAmount: newTotalAmount,
     });
   };
 
